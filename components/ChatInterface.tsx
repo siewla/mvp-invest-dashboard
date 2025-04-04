@@ -2,74 +2,62 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { chatMessagesData } from '@/lib/mock-data/mockData'
-import { User, ChatMessage } from '@/lib/types'
+import { ChatMessage } from '@/lib/types'
+import { useAuth } from '@/lib/context/AuthContext'
+import { apiService } from '@/lib/apiService'
 
 const ChatInterface = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [messages, setMessages] = useState<ChatMessage[]>(chatMessagesData)
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(true)
-  const router = useRouter()
+  const { user } = useAuth()
 
   useEffect(() => {
-    // Check for user on component mount
-    const storedUser = localStorage.getItem('user')
-    if (!storedUser) {
-      router.push('/')
-      return
-    }
+    const fetchMessages = async () => {
+      if (!user) return
 
-    try {
-      const parsedUser: User = JSON.parse(storedUser)
-      setUser(parsedUser)
-    } catch (error) {
-      console.error(error)
-      router.push('/')
-      return
-    }
-
-    // Simulate loading chat messages
-    const loadMessages = async () => {
-      // Check for stored messages
-      const storedMessages = localStorage.getItem('chatMessages')
-
-      // Simulate API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      if (storedMessages) {
-        try {
-          const parsedMessages: ChatMessage[] = JSON.parse(storedMessages)
-          setMessages(parsedMessages)
-        } catch (error) {
-          localStorage.setItem('chatMessages', JSON.stringify(chatMessagesData))
-        }
-      } else {
-        localStorage.setItem('chatMessages', JSON.stringify(chatMessagesData))
+      try {
+        const chatMessages = await apiService.getChatMessages(user.familyId)
+        setMessages(chatMessages)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching chat messages:', error)
+        setLoading(false)
       }
-
-      setLoading(false)
     }
 
-    loadMessages()
-  }, [router])
+    fetchMessages()
+  }, [user])
 
-  const sendMessage = (e: React.FormEvent) => {
+  const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!newMessage.trim() || !user) return
 
-    const newMessageObj: ChatMessage = {
+    const messageData = {
+      familyId: user.familyId,
       senderId: user.userId,
       role: user.role,
-      message: newMessage,
+      message: newMessage
+    }
+
+    // Optimistically update UI
+    const tempMessage: ChatMessage = {
+      ...messageData,
       timestamp: new Date().toISOString()
     }
 
-    const updatedMessages = [...messages, newMessageObj]
-    setMessages(updatedMessages)
-    localStorage.setItem('chatMessages', JSON.stringify(updatedMessages))
+    setMessages(prev => [...prev, tempMessage])
     setNewMessage('')
+
+    try {
+      // Send to API
+      await apiService.sendChatMessage(messageData)
+    } catch (error) {
+      console.error('Error sending message:', error)
+      // Could add error handling here, like removing the message from UI
+      // or showing an error notification
+    }
   }
 
   // Function to format timestamp
@@ -113,6 +101,8 @@ const ChatInterface = () => {
     )
   }
 
+  if (!user) return null
+
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white rounded-lg shadow-md h-full flex flex-col">
       <div className="border-b pb-4 mb-4">
@@ -127,9 +117,9 @@ const ChatInterface = () => {
           messages.map((msg, index) => (
             <div
               key={index}
-              className={`p-3 rounded-lg max-w-[80%] ${msg.senderId === user?.userId
-                ? 'ml-auto bg-blue-100'
-                : 'bg-gray-100'
+              className={`p-3 rounded-lg max-w-[80%] ${msg.senderId === user.userId
+                  ? 'ml-auto bg-blue-100'
+                  : 'bg-gray-100'
                 }`}
             >
               <div className="flex justify-between items-center mb-1">

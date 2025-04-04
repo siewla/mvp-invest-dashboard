@@ -7,5 +7,14 @@
       { "date": "2025-02-01", "value": 3080 },
       { "date": "2025-03-01", "value": 3200 }
     ]
+  },
+  "parent_001": {
+    "portfolioValue": 200.00,
+    "monthlyChange": 20.00,
+    "historicalValues": [
+      { "date": "2025-01-01", "value": 300 },
+      { "date": "2025-02-01", "value": 380 },
+      { "date": "2025-03-01", "value": 320 }
+    ]
   }
 }

@@ -1,4 +1,8 @@
-export type UserRole = 'Parent' | 'Co-Parent' | 'Child'
+export enum UserRole {
+  PARENT = 'Parent',
+  COPARENT = 'Co-Parent',
+  CHILD = 'Child'
+}
 
 export interface FamilyMember {
   userId: string
@@ -49,7 +53,7 @@ export interface Portfolio {
 }
 
 export interface Portfolios {
-  [userId: string]: Portfolio[]
+  [userId: string]: Portfolio
 }
 
 export interface User extends FamilyMember {
