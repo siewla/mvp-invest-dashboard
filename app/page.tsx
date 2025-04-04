@@ -4,27 +4,34 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import LoginForm from '@/components/LoginForm'
 
-export default function Home() {
+const HomePage = () => {
   const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    localStorage.removeItem('user')
-    const user = localStorage.getItem('user')
-    if (user) {
-      setIsLoggedIn(true)
-      router.push('/dashboard')
-    } else {
-      setIsLoggedIn(false)
-      setLoading(false)
+    const checkAuth = async () => {
+      const user = localStorage.getItem('user')
+      // Simulate checking authentication
+      await new Promise(resolve => setTimeout(resolve, 800))
+
+      if (user) {
+        setIsLoggedIn(true)
+        router.push('/dashboard')
+      } else {
+        setIsLoggedIn(false)
+        setLoading(false)
+      }
     }
+
+    checkAuth()
   }, [router])
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex flex-col justify-center items-center min-h-[80vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+        <p className="text-gray-500">Loading application...</p>
       </div>
     )
   }
@@ -39,3 +46,5 @@ export default function Home() {
 
   return null
 }
+
+export default HomePage

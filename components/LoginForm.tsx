@@ -2,40 +2,54 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { User, UserRole } from '@/lib/types'
+import { useAuth } from '@/lib/context/AuthContext'
 import { users } from '@/lib/mock-data/mockData'
-import { User } from '@/lib/types'
 
 const LoginForm = () => {
-  const [selectedUserId, setSelectedUserId] = useState('')
+  const [selectedUserId, setSelectedUserId] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
+  const { login } = useAuth()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!selectedUserId) return
-    const selectedUser = users.find((user: User) => user.userId === selectedUserId)
+
+    const selectedUser = users.find(user => user.userId === selectedUserId)
 
     if (selectedUser) {
-      // Store user info in localStorage for persistence
-      localStorage.setItem('user', JSON.stringify({
+      setIsLoading(true)
+
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Create auth user object
+      const authUser: User = {
         userId: selectedUser.userId,
         name: selectedUser.name,
-        role: selectedUser.role,
+        role: selectedUser.role as UserRole,
         familyId: 'fam_001' // Hardcoded for MVP
-      }))
+      }
 
+      // Use context login function
+      login(authUser)
       router.push('/dashboard')
     }
   }
 
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Family Investment Dashboard</h2>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-600">Family Investment Dashboard</h1>
+        <p className="text-gray-600 mt-2">Login to access your family&apos;s investments</p>
+      </div>
+
       <form onSubmit={handleLogin}>
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Select Your Role</label>
           <div className="flex flex-col space-y-2">
-            {users.map((user: User) => (
+            {users.map((user) => (
               <label key={user.userId} className="inline-flex items-center">
                 <input
                   type="radio"
@@ -44,8 +58,9 @@ const LoginForm = () => {
                   value={user.userId}
                   checked={selectedUserId === user.userId}
                   onChange={() => setSelectedUserId(user.userId)}
+                  disabled={isLoading}
                 />
-                <span className="ml-2 text-blue-700">{user.name} ({user.role})</span>
+                <span className="ml-2">{user.name} ({user.role})</span>
               </label>
             ))}
           </div>
@@ -53,13 +68,20 @@ const LoginForm = () => {
 
         <button
           type="submit"
-          disabled={!selectedUserId}
-          className={`w-full py-2 px-4 rounded-md ${selectedUserId
+          disabled={!selectedUserId || isLoading}
+          className={`w-full py-2 px-4 rounded-md transition duration-300 ${selectedUserId && !isLoading
             ? 'bg-blue-500 text-white hover:bg-blue-600'
             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
         >
-          Login
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
+              Logging in...
+            </div>
+          ) : (
+            'Login'
+          )}
         </button>
       </form>
     </div>

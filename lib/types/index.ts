@@ -1,12 +1,8 @@
-export enum Role {
-  PARENT = 'Parent',
-  COPARENT = 'Co-parent',
-  CHILD = 'Child'
-}
+export type UserRole = 'Parent' | 'Co-Parent' | 'Child'
 
 export interface FamilyMember {
   userId: string
-  role: Role
+  role: UserRole
   name: string
 }
 
@@ -20,7 +16,7 @@ export interface FamilyGroups {
 
 export interface ChatMessage {
   senderId: string
-  role: Role
+  role: UserRole
   message: string
   timestamp: string
 }
