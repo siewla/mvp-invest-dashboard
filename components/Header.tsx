@@ -9,11 +9,7 @@ const Header = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  // Don't show header on the root path (login page)
-  if (pathname === '/') return null
-
-  // Don't show header if not authenticated
-  if (!user) return null
+  if (pathname === '/' || !user) return null
 
   const handleLogout = () => {
     logout()
@@ -22,16 +18,11 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-md py-4">
-      <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
-        <Link href="/dashboard" className="text-xl font-bold text-blue-600">
+      <div className="mx-auto flex justify-between items-center">
+        <Link href="/dashboard" className="text-xl font-bold text-emerald-600 px-2">
           Family Investment Dashboard
         </Link>
-
         <div className="flex items-center space-x-4">
-          <span className="text-gray-700">
-            {user.name} ({user.role})
-          </span>
-
           <div className="flex space-x-2">
             <Link
               href="/dashboard"
@@ -49,10 +40,13 @@ const Header = () => {
 
           <button
             onClick={handleLogout}
-            className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200"
+            className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer"
           >
             Logout
           </button>
+          <span className="text-gray-700 px-2 font-bold">
+            {user.name} ({user.role})
+          </span>
         </div>
       </div>
     </header>

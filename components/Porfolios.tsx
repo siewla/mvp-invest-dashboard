@@ -19,7 +19,7 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
 
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="m-16">
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 className="text-3xl font-bold mb-2">Hi {user?.name}!</h2>
         {
