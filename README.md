@@ -1,5 +1,11 @@
 # Family Investment Dashboard
 
+## Demo Recording
+
+
+https://github.com/user-attachments/assets/8e9f6ad8-6c1a-4cd4-a12f-a2aa2597a06c
+
+
 ## Overview
 
 This project is a prototype for a family investment dashboard designed to provide a child-friendly experience. It includes a view-only investment dashboard for children and a family group chat feature shared among parents, co-parents, and children.
@@ -106,11 +112,9 @@ npm run dev
 ```
 
 ### Deliverables
+- ✅ Working codebase (frontend + backend)
+- ✅ README with setup instructions
+- ✅ GitHub repo (https://github.com/siewla/mvp-invest-dashboard#)
+- ✅ Live demo link (https://mvp-invest-dashboard.vercel.app/)
 
-• ✅ Working codebase (frontend + backend)
-• ✅ README with setup instructions
-• ✅ GitHub repo (https://github.com/siewla/mvp-invest-dashboard#)
-• ✅ Live demo link (https://mvp-invest-dashboard.vercel.app/)
-
-### Demo Recording
 
