@@ -44,7 +44,7 @@ Create a working prototype of a child’s investment dashboard that pulls mock i
 5. **Family Group Chat**
    - Shared chat view for all users.
    - Displays sender's role and timestamp.
-   - Supports basic styling and emojis.
+   - Supports emojis.
 
 ## Tech Stack
 
@@ -110,4 +110,7 @@ npm run dev
 • ✅ Working codebase (frontend + backend)
 • ✅ README with setup instructions
 • ✅ GitHub repo (https://github.com/siewla/mvp-invest-dashboard#)
-• ✅ Live demo link (Netlify, Vercel, etc.)
+• ✅ Live demo link (https://mvp-invest-dashboard.vercel.app/)
+
+### Demo Recording
+
