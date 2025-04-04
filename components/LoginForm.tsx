@@ -32,14 +32,10 @@ const LoginForm = () => {
         role: selectedMember.role,
         familyId
       }
-
-      // Use context login function
       login(authUser)
       router.push('/dashboard')
     }
   }
-
-
 
   return (
     <div className="max-w-md mx-auto bg-amber-100 p-8 rounded-lg shadow-md">
@@ -47,7 +43,6 @@ const LoginForm = () => {
         <h1 className="text-3xl font-bold text-teal-600">Family Investment Dashboard</h1>
         <p className="text-stone-700 mt-2">Login to access your family&apos;s investments</p>
       </div>
-
       <form onSubmit={handleLogin}>
         <div className="mb-6">
           <label className="block text-stone-700 mb-2">Username</label>
@@ -77,7 +72,6 @@ const LoginForm = () => {
             ))}
           </div>
         </div>
-
         <button
           type="submit"
           disabled={!selectedUserId || isSubmitting}

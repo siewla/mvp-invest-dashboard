@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Family Investment Dashboard
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This project is a prototype for a family investment dashboard designed to provide a child-friendly experience. It includes a view-only investment dashboard for children and a family group chat feature shared among parents, co-parents, and children.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎯 Goal
+
+Create a working prototype of a child’s investment dashboard that pulls mock investment data, displays it in a simple, engaging format, and includes a family group chat feature shared across parent, co-parent, and child user
+
+### 👥 User Roles
+
+- **Parent**: Full access to data and chat.
+- **Child**: View-only dashboard with chat access.
+- **Co-Parent**: View-only access and chat access.
+
+### MVP Features
+
+1. **Login Page**
+
+   - Role selector for parent, child, and co-parent.
+   - Dummy username field.
+   - Routes to the appropriate view upon login.
+     ![login page](./images/login.png)
+
+2. **Child Dashboard (view-only)**
+
+   - Displays total investment value.
+   - Shows monthly change in investment.
+   - Includes a simple growth chart using dummy data.
+   - Lists the related brands with logos.
+   - "Ask My Parent" button to open group chat.
+     ![child-portfolio](./images/child-portfolio.png)
+     ![child-investment](./images/child-investment.png)
+
+3. **Parent Dashboard (full-access)**
+   ![parent-portfolio](./images/parent-portfolio.png)
+   ![parent-investment](./images/parent-investment.png)
+
+4. **Co-Parent Dashboard (view-only)**
+   ![coparent-portfolio](./images/coparent-portfolio.png)
+   ![coparent-investment](./images/coparent-investment.png)
+
+5. **Family Group Chat**
+   - Shared chat view for all users.
+   - Displays sender's role and timestamp.
+   - Supports basic styling and emojis.
+
+## Tech Stack
+
+- **Frontend**: Next.js
+- **Backend**: Next.js
+- **Mock Data**: JSON files or in-memory storage (local storage)
+- **UI**: Tailwind CSS
+
+## 📦 Folder Structure (Next.js)
+
+```
+MVP-INVEST-DASHBOARD
+├── app
+│   ├── api
+│   │   ├── chat
+│   │   │  └── route.ts
+│   │   ├── family
+│   │   │  └── route.ts
+│   │   ├── investment
+│   │   │  └── route.ts
+│   │   └── portfolio
+│   │      └── route.ts
+│   ├── chat
+│   │   └── page.tsx
+│   ├── dashboard
+│   │   └── page.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components
+│   ├── ChatInterface.tsx
+│   ├── Header.tsx
+│   ├── InvestmentDashboard.tsx
+│   ├── Investments.tsx
+│   ├── LoginForm.tsx
+│   └── Porfolios.tsx
+├── lib
+│   ├── context
+│   │   └── AuthContext.tsx
+│   ├── mock-data
+│   │   ├── chatMessages.json
+│   │   ├── familyGroups.json
+│   │   ├── investments.json
+│   │   └── portfolio.json
+│   ├── types
+│   │   └── index.ts
+│   └── apiService.ts
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+git clone https://github.com/siewla/mvp-invest-dashboard.git
+cd mvp-invest-dashboard
+npm i
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Deliverables
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+• ✅ Working codebase (frontend + backend)
+• ✅ README with setup instructions
+• ✅ GitHub repo (https://github.com/siewla/mvp-invest-dashboard#)
+• ✅ Live demo link (Netlify, Vercel, etc.)

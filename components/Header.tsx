@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/context/AuthContext'
+import { UserRole } from '@/lib/types'
 
 const Header = () => {
   const { user, logout } = useAuth()
@@ -28,7 +29,7 @@ const Header = () => {
               href="/dashboard"
               className="px-3 py-1 text-sm rounded hover:bg-gray-100"
             >
-              Dashboard
+              Dashboard {user.role !== UserRole.PARENT ? '(View Only)' : ''}
             </Link>
             <Link
               href="/chat"

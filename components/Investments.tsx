@@ -11,8 +11,8 @@ const InvestmentsList = ({ investments }: InvestmentsProp) => {
   const { family, user } = useAuth()
 
   return (
-    <div className="bg-amber-100 p-6 rounded-lg shadow-md mx-16">
-      <h3 className="text-xl font-bold mb-4">Your Family Investments</h3>
+    <div className="bg-amber-100 p-6 rounded-lg shadow-md mx-16 mb-16">
+      <h3 className="text-xl font-bold mb-4">Investments</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Object.keys(investments).map((member) => {
           const userProfile = family.find(m => member === m.userId)

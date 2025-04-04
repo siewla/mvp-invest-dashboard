@@ -2,8 +2,8 @@
 import { Portfolios, UserRole } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/context/AuthContext'
-import React, { PureComponent } from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import React from 'react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 
 interface PortfoliosProp {
   portfolios: Portfolios
@@ -38,9 +38,6 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
                 v: m.value
               }
             })
-
-            console.log(chatData)
-
             return <div key={u}>
               <div className="text-2xl font-semibold text-green-600 mb-1">
                 {u === user?.userId ? `You  (${userProfile?.userId})` : `${userProfile?.name} (${userProfile?.userId})`} has ${portfolio.portfolioValue.toLocaleString()} today
@@ -67,12 +64,7 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
               </LineChart>
             </div>
           })
-
-
         }
-
-
-
         {
           user?.role === UserRole.CHILD && <button
             onClick={handleChatClick}
@@ -88,21 +80,3 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
 
 export default PortfoliosList
 
-
-{/* Simple Chart */ }
-// <div className="h-64 bg-gray-100 p-4 rounded-lg mb-6 flex items-end space-x-4">
-//   {portfolio.historicalValues.map((point, index) => {
-//     const month = new Date(point.date).toLocaleString('default', { month: 'short' })
-//     const height = `${(point.value / (portfolio.portfolioValue * 1.2)) * 100}%`
-
-//     return (
-//       <div key={index} className="flex flex-col items-center flex-1">
-//         <div
-//           className="bg-blue-500 w-full rounded-t-md"
-//           style={{ height }}
-//         ></div>
-//         <div className="text-xs mt-2">{month}</div>
-//       </div>
-//     )
-//   })}
-// </div>
