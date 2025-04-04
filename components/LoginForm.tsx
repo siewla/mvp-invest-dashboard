@@ -1,41 +1,25 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, FamilyMember } from '@/lib/types'
+import { User } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
-import { apiService } from '@/lib/apiService'
 
 const LoginForm = () => {
   const [familyId] = useState<string>('fam_001') // Hardcoded for MVP
-  const [members, setMembers] = useState<FamilyMember[]>([])
+
   const [selectedUserId, setSelectedUserId] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const router = useRouter()
-  const { login } = useAuth()
+  const { login, family } = useAuth()
 
-  useEffect(() => {
-    const fetchFamily = async () => {
-      try {
-        const family = await apiService.getFamily(familyId)
-        setMembers(family.members)
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching family:', error)
-        setIsLoading(false)
-      }
-    }
-
-    fetchFamily()
-  }, [familyId])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!selectedUserId) return
 
-    const selectedMember = members.find(member => member.userId === selectedUserId)
+    const selectedMember = family.find(member => member.userId === selectedUserId)
 
     if (selectedMember) {
       setIsSubmitting(true)
@@ -55,13 +39,7 @@ const LoginForm = () => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md flex justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white-500"></div>
-      </div>
-    )
-  }
+
 
   return (
     <div className="max-w-md mx-auto bg-amber-100 p-8 rounded-lg shadow-md">
@@ -83,7 +61,7 @@ const LoginForm = () => {
         <div className="mb-6">
           <label className="block text-stone-700 mb-2">Select Your Role</label>
           <div className="flex flex-col space-y-2">
-            {members.map((member) => (
+            {family.map((member) => (
               <label key={member.userId} className="inline-flex items-center">
                 <input
                   type="radio"

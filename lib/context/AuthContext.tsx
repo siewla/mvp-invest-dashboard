@@ -1,10 +1,12 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { User } from '@/lib/types'
+import { User, FamilyMember } from '@/lib/types'
+import { apiService } from '@/lib/apiService'
 
 interface AuthContextType {
   user: User | null
+  family: FamilyMember[]
   login: (user: User) => void
   logout: () => void
   isAuthenticated: boolean
@@ -12,6 +14,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  family: [],
   login: () => { },
   logout: () => { },
   isAuthenticated: false
@@ -19,6 +22,22 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
+  const [familyId] = useState<string>('fam_001') // Hardcoded for MVP
+  const [members, setMembers] = useState<FamilyMember[]>([])
+
+  useEffect(() => {
+    const fetchFamily = async () => {
+      try {
+        const family = await apiService.getFamily(familyId)
+        setMembers(family.members)
+      } catch (error) {
+        console.error('Error fetching family:', error)
+      }
+    }
+
+    fetchFamily()
+  }, [familyId])
+
 
   useEffect(() => {
     // Load user from localStorage on initial mount
@@ -46,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{
       user,
+      family: members,
       login,
       logout,
       isAuthenticated: !!user

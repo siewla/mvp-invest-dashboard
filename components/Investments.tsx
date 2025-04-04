@@ -1,21 +1,27 @@
 'use client'
 import Image from 'next/image'
 import { Investments } from '@/lib/types'
+import { useAuth } from '@/lib/context/AuthContext'
 
 interface InvestmentsProp {
   investments: Investments
 }
 
 const InvestmentsList = ({ investments }: InvestmentsProp) => {
-  console.log(investments)
+  const { family, user } = useAuth()
+
   return (
     <div className="bg-amber-100 p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Your Investments</h3>
+      <h3 className="text-xl font-bold mb-4">Your Family Investments</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-        {Object.keys(investments).map((member) => (
-          <div key={member} className='p-4 bg-teal-600 rounded-lg'>
-            <div>UserId: {member}</div>
+        {Object.keys(investments).map((member) => {
+          const userProfile = family.find(m => member === m.userId)
+
+          return <div key={member} className='p-4 bg-teal-600 rounded-lg'>
+            <div className="text-2xl font-semibold text-white mb-1">
+              {member === user?.userId ? `You  (${userProfile?.userId})` : `${userProfile?.name} (${userProfile?.userId})`}
+            </div>
             {
               investments[member].map(investment => {
                 return <div
@@ -43,7 +49,7 @@ const InvestmentsList = ({ investments }: InvestmentsProp) => {
             }
 
           </div>
-        ))}
+        })}
       </div>
     </div>
   )
