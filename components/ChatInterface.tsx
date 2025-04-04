@@ -8,7 +8,7 @@ const ChatInterface = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState<string>('')
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
-  const { user } = useAuth()
+  const { user, family } = useAuth()
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -76,8 +76,9 @@ const ChatInterface = () => {
         {messages.length === 0 ? (
           <p className="text-center text-gray-500 italic">No messages yet. Start the conversation!</p>
         ) : (
-          messages.map((msg, index) => (
-            <div
+          messages.map((msg, index) => {
+            const userProfile = family.find(m => m.userId === msg.senderId)
+            return <div
               key={index}
               className={`p-3 rounded-lg max-w-[80%] ${msg.senderId === user.userId
                 ? 'ml-auto bg-blue-100 shadow'
@@ -86,13 +87,13 @@ const ChatInterface = () => {
             >
               <div className="flex justify-between items-center mb-1">
                 <span className="font-semibold text-sm text-blue-600">
-                  {msg.role}
+                  {msg.senderId === user.userId ? 'You' : userProfile?.name} ({msg.role})
                 </span>
                 <span className="text-xs text-gray-500">{formatTime(msg.timestamp)}</span>
               </div>
               <p className="text-sm">{msg.message}</p>
             </div>
-          ))
+          })
         )}
       </div>
 

@@ -2,6 +2,8 @@
 import { Portfolios, UserRole } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/context/AuthContext'
+import React, { PureComponent } from 'react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 interface PortfoliosProp {
   portfolios: Portfolios
@@ -30,13 +32,21 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
             const percentChange = ((latestValue - previousValue) / previousValue) * 100
             const isGrowing = percentChange > 0
             const userProfile = family.find(m => u === m.userId)
+            const chatData = portfolio.historicalValues.sort().map(m => {
+              return {
+                name: m.date,
+                v: m.value
+              }
+            })
+
+            console.log(chatData)
 
             return <div key={u}>
               <div className="text-2xl font-semibold text-green-600 mb-1">
                 {u === user?.userId ? `You  (${userProfile?.userId})` : `${userProfile?.name} (${userProfile?.userId})`} has ${portfolio.portfolioValue.toLocaleString()} today
               </div>
               <div className="text-lg text-gray-600 mb-4">
-                <span>{u}&apos;s money</span>
+                <span>{u}&apos;s money {' '}</span>
                 <span>{isGrowing ? 'grew' : 'dropped'} </span>
                 <span>by {' '}</span>
                 <span className={isGrowing ? 'text-green-500' : 'text-red-500'}>${portfolio.monthlyChange.toLocaleString()} </span>
@@ -44,8 +54,21 @@ const PortfoliosList = ({ portfolios }: PortfoliosProp) => {
                 <span className={isGrowing ? 'text-green-500' : 'text-red-500'}>{percentChange.toFixed(2)}</span>
                 <span>%)</span>
               </div>
+              <LineChart
+                width={500}
+                height={300}
+                data={chatData}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="v" stroke="rgb(0, 151, 80)" activeDot={{ r: 8 }} />
+              </LineChart>
             </div>
           })
+
+
         }
 
 
