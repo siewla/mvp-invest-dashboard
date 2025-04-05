@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Investments, Portfolios } from '@/lib/types'
+import { Investments } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
 import { apiService } from '@/lib/apiService'
 import InvestmentsComponent from './Investments'
 import PortfoliosComponent from './Porfolios'
+import AddFamilyMember from './AddFamilyMember'
+import { usePortfolio } from '@/lib/context/PortfolioContext'
 
 const InvestmentDashboard = () => {
-  const [portfolios, setPortfolios] = useState<Portfolios>({})
+  const { setPortfolios } = usePortfolio()
+
   const [investments, setInvestments] = useState<Investments>({})
   const { user } = useAuth()
 
@@ -27,10 +30,11 @@ const InvestmentDashboard = () => {
     }
 
     fetchData()
-  }, [user])
+  }, [user, setPortfolios])
 
   return <>
-    <PortfoliosComponent portfolios={portfolios} />
+    <AddFamilyMember />
+    <PortfoliosComponent />
     <InvestmentsComponent investments={investments} />
   </>
 }
