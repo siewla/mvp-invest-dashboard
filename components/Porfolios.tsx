@@ -9,10 +9,12 @@ import { useAuth } from '@/lib/context/AuthContext'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { apiService } from '@/lib/apiService'
 import { usePortfolio } from '@/lib/context/PortfolioContext'
+import { useFamily } from '@/lib/context/FamilyContext'
 
 const PortfoliosList = () => {
   const router = useRouter()
-  const { user, family } = useAuth()
+  const { user } = useAuth()
+  const { family } = useFamily()
   const [selectedUserId, setSelectedUserId] = useState(user?.userId || '')
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [amount, setAmount] = useState(0)
@@ -146,7 +148,6 @@ const PortfoliosList = () => {
                       />
                     </div>
                   </>}
-
               </div>
             </>
           )

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { User } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
+import { useFamily } from '@/lib/context/FamilyContext'
 
 const LoginForm = () => {
   const [familyId] = useState<string>('fam_001') // Hardcoded for MVP
@@ -11,7 +12,8 @@ const LoginForm = () => {
   const [selectedUserId, setSelectedUserId] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const router = useRouter()
-  const { login, family } = useAuth()
+  const { login } = useAuth()
+  const { family } = useFamily()
 
 
   const handleLogin = async (e: React.FormEvent) => {

@@ -2,14 +2,15 @@
 import Image from 'next/image'
 import { Investments } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
+import { useFamily } from '@/lib/context/FamilyContext'
 
 interface InvestmentsProp {
   investments: Investments
 }
 
 const InvestmentsList = ({ investments }: InvestmentsProp) => {
-  const { family, user } = useAuth()
-
+  const { user } = useAuth()
+  const { family } = useFamily()
   return (
     <div className="bg-amber-100 p-6 rounded-lg shadow-md mx-16 mb-16">
       <h3 className="text-xl font-bold mb-4">Investments</h3>

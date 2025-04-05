@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { apiService } from '@/lib/apiService'
 import { UserRole } from '@/lib/types'
+import { useFamily } from '@/lib/context/FamilyContext'
 
 const AddFamilyMember = () => {
   const [userId, setUserId] = useState('')
   const [role, setRole] = useState<UserRole>(UserRole.CHILD)
   const [name, setName] = useState('')
+  const { setFamily } = useFamily()
 
   const handleAddMember = async () => {
     try {
-      await apiService.addFamilyMember('fam_001', userId, role, name)
-      alert('Member added successfully')
+      const response = await apiService.addFamilyMember('fam_001', userId, role, name)
+      setFamily(response?.members)
     } catch (error) {
       console.error('Error adding member:', error)
     }
