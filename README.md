@@ -16,7 +16,7 @@ Create a working prototype of a child’s investment dashboard that pulls mock i
 
 - **Parent**: Full access to data (can add new family members, add/remove/topup/withdraw portfolio) and chat.
 - **Child**: View-only dashboard to self portfolio with chat access.
-- **Co-Parent**: View-only access to all portoflio and chat access.
+- **Co-Parent**: View-only access to all portfolios and chat access.
 
 ### MVP Features
 
