@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Investments } from '@/lib/types'
+import { Investments, UserRole } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
 import { apiService } from '@/lib/apiService'
 import InvestmentsComponent from './Investments'
@@ -33,7 +33,7 @@ const InvestmentDashboard = () => {
   }, [user, setPortfolios])
 
   return <>
-    <AddFamilyMember />
+    {user?.role === UserRole.PARENT && <AddFamilyMember />}
     <PortfoliosComponent />
     <InvestmentsComponent investments={investments} />
   </>

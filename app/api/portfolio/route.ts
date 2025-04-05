@@ -52,35 +52,48 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ error: 'Portfolio not found for user' }, { status: 404 })
   }
 
-
   switch (action) {
     case 'remove':
       delete portfolios[userId]
       break
+
     case 'add':
       if (!currentPortfolio) {
         portfolios[userId] = {
           portfolioValue: amount,
-          monthlyChange: amount,
+          monthlyChange: 0,
           historicalValues: [{ date: formattedDate, value: amount }]
         }
       }
       break
+
     case 'topUp':
-    case 'withdraw':
+    case 'withdraw': {
       const existingEntry = currentPortfolio.historicalValues.find(entry => entry.date === formattedDate)
+      const changeAmount = action === 'topUp' ? amount : -amount
+
       if (existingEntry) {
-        existingEntry.value = action === 'topUp'
-          ? existingEntry.value + amount
-          : existingEntry.value - amount
+        existingEntry.value += changeAmount
       } else {
         currentPortfolio.historicalValues.push({
           date: formattedDate,
-          value: action === 'topUp' ? amount : -amount
+          value: currentPortfolio.portfolioValue + changeAmount
         })
       }
-      currentPortfolio.portfolioValue = existingEntry ? existingEntry.value : currentPortfolio.portfolioValue
+
+      // Update portfolioValue
+      currentPortfolio.portfolioValue += changeAmount
+
+      // Sort historical values
+      currentPortfolio.historicalValues.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+      // Update monthlyChange
+      const lastEntry = currentPortfolio.historicalValues.slice(-2)[0]
+      currentPortfolio.monthlyChange = lastEntry ? currentPortfolio.portfolioValue - lastEntry.value : 0
+
       break
+    }
+
     default:
       return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
   }

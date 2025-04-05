@@ -3,13 +3,14 @@ import { ChatMessage } from '@/lib/types'
 import { useAuth } from '@/lib/context/AuthContext'
 import { apiService } from '@/lib/apiService'
 import EmojiPicker from 'emoji-picker-react'
+import { useFamily } from '@/lib/context/FamilyContext'
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState<string>('')
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
-  const { user, family } = useAuth()
-
+  const { user } = useAuth()
+  const { family } = useFamily()
   useEffect(() => {
     const fetchMessages = async () => {
       if (!user) return

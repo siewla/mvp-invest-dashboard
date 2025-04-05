@@ -30,64 +30,52 @@ const PortfoliosList = () => {
 
   const handleAddPortfolio = async () => {
     if (!selectedUserId || !selectedDate || !amount) {
-      alert('Please fill all fields for adding a portfolio')
       return
     }
     const formattedDate = format(selectedDate, 'yyyy-MM')
     try {
       const newPortfolios = await apiService.addPortfolio(selectedUserId, amount, formattedDate)
       setPortfolios(newPortfolios)
-      alert('Portfolio added successfully')
     } catch (error) {
       console.error('Error adding portfolio:', error)
-      alert('Failed to add portfolio')
     }
   }
 
   const handleTopUp = async () => {
     if (!selectedUserId || !amount) {
-      alert('Please fill the amount for topping up')
       return
     }
     const formattedDate = format(selectedDate, 'yyyy-MM')
     try {
       const newPortfolios = await apiService.topUpPortfolio(selectedUserId, amount, formattedDate)
       setPortfolios(newPortfolios)
-      alert('Top-up successful')
     } catch (error) {
       console.error('Error topping up:', error)
-      alert('Failed to top-up portfolio')
     }
   }
 
   const handleWithdraw = async () => {
     if (!selectedUserId || !amount) {
-      alert('Please fill the amount for withdrawing')
       return
     }
     const formattedDate = format(selectedDate, 'yyyy-MM')
     try {
       const newPortfolios = await apiService.withdrawPortfolio(selectedUserId, amount, formattedDate)
       setPortfolios(newPortfolios)
-      alert('Withdrawal successful')
     } catch (error) {
       console.error('Error withdrawing:', error)
-      alert('Failed to withdraw from portfolio')
     }
   }
 
   const handleRemovePortfolio = async () => {
     if (!selectedUserId) {
-      alert('Please select a user to remove the portfolio')
       return
     }
     try {
       const newPortfolios = await apiService.removePortfolio(selectedUserId)
       setPortfolios(newPortfolios)
-      alert('Portfolio removed successfully')
     } catch (error) {
       console.error('Error removing portfolio:', error)
-      alert('Failed to remove portfolio')
     }
   }
 
@@ -135,7 +123,6 @@ const PortfoliosList = () => {
                         calendarClassName="fixed" // Ensures the calendar doesn't cause layout shift
                       />
                     </div>
-
                     <div className="flex flex-col">
                       <label htmlFor="amount-input" className="mb-2 font-semibold">Amount</label>
                       <input
@@ -156,26 +143,39 @@ const PortfoliosList = () => {
           user?.role === UserRole.PARENT
             ? selectedPortfolio ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8 py-8">
-
-                <button onClick={handleTopUp} className="bg-blue-500 text-white py-2 px-4 rounded-md mr-2">
+                <button
+                  onClick={handleTopUp}
+                  className={`bg-blue-500 text-white py-2 px-4 rounded-md mr-2 ${!amount ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={!amount}
+                >
                   Top Up
                 </button>
-                <button onClick={handleWithdraw} className="bg-red-500 text-white py-2 px-4 rounded-md mr-2">
+                <button
+                  onClick={handleWithdraw}
+                  className={`bg-red-500 text-white py-2 px-4 rounded-md mr-2 ${!amount ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={!amount}
+                >
                   Withdraw
                 </button>
-                <button onClick={handleRemovePortfolio} className="bg-gray-500 text-white py-2 px-4 rounded-md">
+                <button
+                  onClick={handleRemovePortfolio}
+                  className="bg-gray-500 text-white py-2 px-4 rounded-md"
+                >
                   Remove Portfolio
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-6 px-8 ">
-                <button onClick={handleAddPortfolio} className="bg-teal-500 text-amber-100 py-2 px-4 rounded-md">
+              <div className="grid grid-cols-1 gap-6 px-8">
+                <button
+                  onClick={handleAddPortfolio}
+                  className={`bg-teal-500 text-amber-100 py-2 px-4 rounded-md ${!selectedUserId || !selectedDate || !amount ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={!selectedUserId || !selectedDate || !amount}
+                >
                   Add Portfolio
                 </button>
               </div>
             ) : null
         }
-
         {selectedPortfolio && (
           <div>
             <div className="text-2xl font-semibold text-green-600 mb-1">

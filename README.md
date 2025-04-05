@@ -2,9 +2,7 @@
 
 ## Demo Recording
 
-
 https://github.com/user-attachments/assets/8e9f6ad8-6c1a-4cd4-a12f-a2aa2597a06c
-
 
 ## Overview
 
@@ -16,9 +14,9 @@ Create a working prototype of a child’s investment dashboard that pulls mock i
 
 ### 👥 User Roles
 
-- **Parent**: Full access to data and chat.
-- **Child**: View-only dashboard with chat access.
-- **Co-Parent**: View-only access and chat access.
+- **Parent**: Full access to data (can add new family members, add/remove/topup/withdraw portfolio) and chat.
+- **Child**: View-only dashboard to self portfolio with chat access.
+- **Co-Parent**: View-only access to all portoflio and chat access.
 
 ### MVP Features
 
@@ -40,7 +38,8 @@ Create a working prototype of a child’s investment dashboard that pulls mock i
      ![child-investment](./images/child-investment.png)
 
 3. **Parent Dashboard (full-access)**
-   ![parent-portfolio](./images/parent-portfolio.png)
+   ![parent-portfolio](./images/parent-manage-portfolio.png)
+   ![parent-portfolio](./images/parent-add-portfolio.png)
    ![parent-investment](./images/parent-investment.png)
 
 4. **Co-Parent Dashboard (view-only)**
@@ -82,6 +81,7 @@ MVP-INVEST-DASHBOARD
 │   ├── layout.tsx
 │   └── page.tsx
 ├── components
+│   ├── AddFamilyMember.tsx
 │   ├── ChatInterface.tsx
 │   ├── Header.tsx
 │   ├── InvestmentDashboard.tsx
@@ -91,6 +91,8 @@ MVP-INVEST-DASHBOARD
 ├── lib
 │   ├── context
 │   │   └── AuthContext.tsx
+│   │   └── FamilyContext.tsx
+│   │   └── PortfolioContext.tsx
 │   ├── mock-data
 │   │   ├── chatMessages.json
 │   │   ├── familyGroups.json
@@ -112,9 +114,8 @@ npm run dev
 ```
 
 ### Deliverables
+
 - ✅ Working codebase (frontend + backend)
 - ✅ README with setup instructions
 - ✅ GitHub repo (https://github.com/siewla/mvp-invest-dashboard#)
 - ✅ Live demo link (https://mvp-invest-dashboard.vercel.app/)
-
-
